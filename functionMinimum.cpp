@@ -50,7 +50,7 @@ int main ()
     }
 
     /// COMEÇANDO AS ITERAÇÕES
-    while(solucao==false)  // O critério de solução adotado neste caso é por tempo
+    while(solucao==false)  // O critério de solução adotado neste caso é por tempo (4 segundos)
     {
         for(int i=0; i<n; i++)
         {
