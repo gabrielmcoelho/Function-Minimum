@@ -4,26 +4,27 @@
 #include <ctime>
 using namespace std;
 
-#define d 5 // Para o problema, temos 5 dimensıes
-#define n 10 // Para o problema, est· sendo considerada uma nuvem com 10 partÌculas
+#define d 5 // Para o problema, temos 5 dimens√µes
+#define n 10 // Para o problema, est√° sendo considerada uma nuvem com 10 part√≠culas
 #define PI 3.14159265
 #define c1 0.8 // Define o coeficiente individual em 0.8
 #define c2 1.3 // Define o coeficiente social em 1.3
-#define w 0.8 // Define o fator de inÈrcia em 0.8
+#define w 0.8 // Define o fator de in√©rcia em 0.8
 
 struct Particula
 {
-    float p[d]; // Vetor que armazena a posiÁ„o atual da partÌcula
-    float pbest[d]; // Vetor que armazena a melhor posiÁ„o da partÌcula
-    float v[d]; // Vetor que armazena a velocidade da partÌcula
-    float fitness; // A avaliaÁ„o de cada partida, que È baseado na posiÁ„o atual da mesma
+    float p[d]; // Vetor que armazena a posi√ß√£o atual da part√≠cula
+    float pbest[d]; // Vetor que armazena a melhor posi√ß√£o da part√≠cula
+    float v[d]; // Vetor que armazena a velocidade da part√≠cula
+    float fitness; // A avalia√ß√£o de cada partida, que √© baseado na posi√ß√£o atual da mesma
 };
 
-void inicializa_particulas(float p[], float pbest[], float v[]);
-float calcula_fitness(float p[]);
-void calcula_velocidade(float p[], float pbest[], float v[], float gbest[]);
-void atualiza_posicao(float p[], float v[]);
-void imprime_resultados(float p[], float pbest[], float v[], float gbest[], float fitness, int k);
+void inicializa_particulas(float p[], float pbest[], float v[]); // Inicializa os vetores de posicao, pbest e velocidade das particulas iniciais
+float calcula_fitness(float p[]); // Calcula o fitness de cada part√≠cula com base na fun√ß√£o utilizada na prova
+void calcula_velocidade(float p[], float pbest[], float v[], float gbest[]); // Calcula a nova velocidade de cada part√≠cula utilizando a f√≥rmula "padr√£o" do PSO
+void atualiza_posicao(float p[], float v[]); // Atualiza a posi√ß√£o de cada part√≠cula com base na posi√ß√£o antiga e na nova velocidade
+void imprime_resultados(float p[], float pbest[], float v[], float gbest[], float fitness, int k); // Imprime os par√¢metros de cada part√≠cula
+
 
 int main ()
 {
@@ -33,9 +34,9 @@ int main ()
     float trono, gbest[d];
     double elapsed_secs;
     bool solucao = false;
-    Particula pt[n]; // Define a nuvem como um conjunto de n partÌculas
+    Particula pt[n]; // Define a nuvem como um conjunto de n part√≠culas
 
-    /// INICIALIZANDO AS PARTÕCULAS
+    /// INICIALIZANDO AS PART√çCULAS
     for(int i=0; i<n; i++)
     {
         inicializa_particulas(pt[i].p, pt[i].pbest, pt[i].v);
@@ -48,16 +49,16 @@ int main ()
         gbest[i] = pt[0].pbest[i];
     }
 
-    /// COME«ANDO AS ITERA«’ES
-    while(solucao==false)  // O critÈrio de soluÁ„o adotado neste caso È por tempo
+    /// COME√áANDO AS ITERA√á√ïES
+    while(solucao==false)  // O crit√©rio de solu√ß√£o adotado neste caso √© por tempo
     {
         for(int i=0; i<n; i++)
         {
             calcula_velocidade(pt[i].p, pt[i].pbest, pt[i].v, gbest); // Calcula a nova velocidade de cada particula
             atualiza_posicao(pt[i].p, pt[i].v); // Atualiza a posicao de cada particula com base em sua nova velocidade
-            pt[i].fitness = calcula_fitness(pt[i].p); // Atualiza a avaliaÁ„o de cada partÌcula
+            pt[i].fitness = calcula_fitness(pt[i].p); // Atualiza a avalia√ß√£o de cada part√≠cula
 
-            /// SUBSTITUINDO, OU N√O, O PBEST DE CADA PARTÕCULA
+            /// SUBSTITUINDO, OU N√ÉO, O PBEST DE CADA PART√çCULA
             if(pt[i].fitness < calcula_fitness(pt[i].pbest))  // Se o fitness da posicao atual da particula for melhor que o fitness da posicao pbest dela
             {
                 for(int j=0; j<d; j++)  // Atualize o pbest
@@ -79,7 +80,7 @@ int main ()
             }
         }
 
-        /// SUBSTITUINDO, OU N√O, O GBEST
+        /// SUBSTITUINDO, OU N√ÉO, O GBEST
         if( calcula_fitness(pt[indice].pbest) < calcula_fitness(gbest) )  // Se o fitness do melhor pbest for melhor que o fitness do gbest
         {
             for(int i=0; i<d; i++)  // gbest recebe o melhor pbest
